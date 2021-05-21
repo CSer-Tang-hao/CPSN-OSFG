@@ -1,7 +1,7 @@
 # CPSN-OSFG
 
 ## Coupled Patch Similarity Network For One-Shot Fine-Grained Image Recognition (Accepted by IEEE ICIP 2021) 
-
+### By Sheng Tian*, [Hao Tang*](https://cser-tang-hao.github.io/) and Longquan Dai (*Equal Contribution)
 ## Enviroment
  - Python3
  - [Pytorch](http://pytorch.org/) >= 0.4.1 
