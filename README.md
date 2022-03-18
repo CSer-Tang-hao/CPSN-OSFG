@@ -11,4 +11,4 @@
 - [x] Othes is done on-the-fly and more to come......
 
 
-### --> Work in progress - Code will be released soon <--
+### --> Work in progress  <--
