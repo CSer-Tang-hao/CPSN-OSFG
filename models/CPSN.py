@@ -15,7 +15,7 @@ class CPSN(nn.Module):
 
         # self.width = width
         # self.new_width = width
-        # self.in_features = self.width * self.width
+        self.in_features = self.width * self.width
         self.in_channels = in_channel
 
         self.soft_max = nn.Softmax(dim=-1)
@@ -92,16 +92,18 @@ class CPSN(nn.Module):
         a2 = a2.unsqueeze(2).repeat(1, 1, s, 1, 1) # [300, 1, 5, 5, 5]
 
         # Todo: sort query_weight
-        a2_flatten = a2.view(-1) # [37500]
-        query_index_flatten = query_index.view(-1)
-        a2_sort_flatten = a2_flatten[query_index_flatten]
-        a2_sort = a2_sort_flatten.view(b, q, s, h*w) # [4, 75, 5, 25]
+        a2_flatten = a2.view(-1, self.in_features) # [1500,36]
+        query_index_flatten = query_index.view(-1, self.in_features) # [1500,36]
+        for index in range(a2_flatten.shape[0]):
+            a2_flatten[index] = a2_flatten[index][query_index_flatten[index]]
+        a2_sort = a2_flatten.view(b, q, s, self.in_features) # [4, 75, 5, 25]
 
         # Todo: sort support_weight
-        a1_flatten = a1.view(-1)
-        support_index_flatten = support_index.view(-1)
-        a1_sort_flatten = a1_flatten[support_index_flatten]
-        a1_sort = a1_sort_flatten.view(b, q, s, h*w)
+        a1_flatten = a1.view(-1, self.in_features)
+        support_index_flatten = support_index.view(-1, self.in_features)
+        for index in range(a1_flatten.shape[0]):
+            a1_flatten[index] = a1_flatten[index][support_index_flatten[index]]
+        a1_sort = a1_flatten.view(b, q, s, self.in_features)
 
         # Todo: flatten x1,x2,f1_weight,f2_weight,f1_weight_sort,f2_weight_sort
         # s12=s21=[4, 75, 5, 25]
